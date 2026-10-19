@@ -23,17 +23,24 @@ export default function AboutUs() {
     <main className="about-page page-shell">
       <section className="about-hero">
         <div className="about-copy">
-          <span className="eyebrow"><Leaf size={15} /> ROOTED IN GOOD THINGS</span>
-          <h1>Making room for <em>more green.</em></h1>
-          <p>
-            Paradise Nursery is your friendly neighborhood plant shop for leafy
-            companions, considered pots, and practical advice that makes plant
-            care feel joyful—not intimidating.
+          <span className="eyebrow">
+            <Leaf size={15} /> ROOTED IN GOOD THINGS
+          </span>
+          <h1>Welcome to Paradise Nursery</h1>
+          <p className="tagline" style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--color-primary, #1e453e)' }}>
+            Where green meets serenity
           </p>
           <p>
-            Whether you are bringing home your very first plant or adding to a
-            well-loved indoor jungle, we are here to help you find a plant that
-            fits your space and your life.
+            At Paradise Nursery, we are passionate about bringing nature closer to you.
+            Our mission is to provide a wide range of high-quality plants that not only enhance
+            the beauty of your surroundings but also contribute to a healthier and more
+            sustainable lifestyle.
+          </p>
+          <p>
+            From air-purifying plants to aromatic fragrant varieties, we have something
+            for every plant enthusiast. Whether you are bringing home your very first plant
+            or adding to a well-loved indoor jungle, we are here to help you find a plant
+            that fits your space and your life.
           </p>
         </div>
         <div className="about-image-wrap">
@@ -41,7 +48,10 @@ export default function AboutUs() {
             src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=1200&q=85"
             alt="A collection of healthy green houseplants"
           />
-          <div className="image-note"><span>GROW AT YOUR OWN PACE</span><strong>Good things take roots.</strong></div>
+          <div className="image-note">
+            <span>GROW AT YOUR OWN PACE</span>
+            <strong>Good things take roots.</strong>
+          </div>
         </div>
       </section>
 
@@ -54,7 +64,9 @@ export default function AboutUs() {
         <div className="values-grid">
           {values.map(({ icon: Icon, title, text }) => (
             <article className="value-card" key={title}>
-              <span className="value-icon"><Icon size={22} /></span>
+              <span className="value-icon">
+                <Icon size={22} />
+              </span>
               <h3>{title}</h3>
               <p>{text}</p>
             </article>

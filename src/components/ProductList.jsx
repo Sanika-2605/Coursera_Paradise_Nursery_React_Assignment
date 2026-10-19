@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Check, Plus, SlidersHorizontal } from 'lucide-react';
 import { products } from '../data/products.js';
-import { addToCart, selectCartItems } from '../features/cart/CartSlice.jsx';
+import { addItem, selectCartItems } from '../features/cart/CartSlice.jsx';
 
 const categories = ['All plants', 'Statement plants', 'Easy care', 'Trailing plants'];
 
@@ -14,13 +14,21 @@ export default function ProductList() {
 
   const visibleProducts = useMemo(() => {
     return products.filter((product) => {
-      const matchesCategory = activeCategory === 'All plants' || product.category === activeCategory;
-      const matchesSearch = `${product.name} ${product.category}`.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory =
+        activeCategory === 'All plants' || product.category === activeCategory;
+      const matchesSearch = `${product.name} ${product.category}`
+        .toLowerCase()
+        .includes(search.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, search]);
 
-  const isInCart = (id) => cartItems.some((item) => item.id === id);
+  const isInCart = (product) =>
+    cartItems.some((item) => item.id === product.id || item.name === product.name);
+
+  const handleAddToCart = (product) => {
+    dispatch(addItem(product));
+  };
 
   return (
     <main className="catalog-page page-shell">
@@ -61,7 +69,7 @@ export default function ProductList() {
       {visibleProducts.length > 0 ? (
         <section className="product-grid" aria-label="Plant products">
           {visibleProducts.map((product) => {
-            const added = isInCart(product.id);
+            const added = isInCart(product);
             return (
               <article className="product-card" key={product.id}>
                 <div className="product-image-wrap">
@@ -72,16 +80,24 @@ export default function ProductList() {
                   <span className="product-category">{product.category}</span>
                   <div className="product-title-row">
                     <h2>{product.name}</h2>
-                    <strong className="product-price">${product.price.toFixed(2)}</strong>
+                    <strong className="product-price">${Number(product.price).toFixed(2)}</strong>
                   </div>
                   <p>{product.description}</p>
                   <button
                     type="button"
                     className={`add-button ${added ? 'added' : ''}`}
                     disabled={added}
-                    onClick={() => dispatch(addToCart(product))}
+                    onClick={() => handleAddToCart(product)}
                   >
-                    {added ? <><Check size={16} /> Added to cart</> : <><Plus size={16} /> Add to cart</>}
+                    {added ? (
+                      <>
+                        <Check size={16} /> Added to Cart
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={16} /> Add to Cart
+                      </>
+                    )}
                   </button>
                 </div>
               </article>
@@ -93,7 +109,15 @@ export default function ProductList() {
           <span>🌱</span>
           <h2>No plants found</h2>
           <p>Try another search or choose a different category.</p>
-          <button className="text-button" onClick={() => { setSearch(''); setActiveCategory('All plants'); }}>Show all plants</button>
+          <button
+            className="text-button"
+            onClick={() => {
+              setSearch('');
+              setActiveCategory('All plants');
+            }}
+          >
+            Show all plants
+          </button>
         </div>
       )}
     </main>
